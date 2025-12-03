@@ -1,0 +1,623 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Toujours Frais — Bakery Shop</title>
+  <meta name="description" content="Toujours Frais Bakery — Fresh bread, cakes & pastries. Order online or via WhatsApp / Instagram." />
+
+  <style>
+    :root{
+      --bg:#fff8f3;
+      --card:#ffffff;
+      --accent:#ff7a2d;   /* orange */
+      --accent-dark:#e05500;
+      --muted:#6b5a50;
+      --green:#2fa44f;
+      --glass: rgba(255,255,255,0.7);
+      --shadow: 0 8px 20px rgba(37,25,16,0.12);
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: linear-gradient(180deg,#fff8f3 0%, #fff3e6 100%);
+      color:var(--muted);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+
+    /* NAV */
+    header{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter: blur(6px);
+      background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.6));
+      box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+    }
+    .nav {
+      max-width:1100px; margin:0 auto; display:flex; align-items:center; justify-content:space-between;
+      padding:12px 16px;
+    }
+    .brand { display:flex; gap:10px; align-items:center; cursor: pointer;}
+    .brand .logo {
+      width:48px; height:48px; border-radius:10px; background: linear-gradient(135deg,var(--accent), #ffb07a);
+      display:flex; align-items:center; justify-content:center; color:white; font-weight:700; box-shadow:var(--shadow);
+    }
+    .brand h1{font-size:18px; margin:0; color:#382a21;}
+    nav .links{display:flex; gap:12px; align-items:center;}
+    nav a{
+      text-decoration:none; color:var(--muted); padding:8px 12px; border-radius:8px; font-weight:600;
+    }
+    nav a:hover{background:var(--glass); color:#382a21; transform:translateY(-2px); transition:all .18s ease}
+
+    /* hero */
+    .hero{
+      max-width:1100px; margin:18px auto; display:grid; grid-template-columns:1fr 420px; gap:20px; padding:0 16px;
+    }
+    .hero-left{
+      background: linear-gradient(180deg, rgba(255,255,255,0.7), rgba(255,255,255,0.55));
+      border-radius:16px; padding:26px; box-shadow:var(--shadow);
+      display:flex; flex-direction:column; gap:16px; justify-content:center;
+    }
+    .eyebrow{color:var(--accent-dark); font-weight:700; letter-spacing:0.6px}
+    .hero-left h2{font-size:28px; margin:0; color:#2f1f18}
+    .hero-left p{color:#5b4b44; line-height:1.45}
+    .hero-actions{display:flex; gap:12px; align-items:center}
+    .btn{
+      background:var(--accent); color:white; border:none; padding:12px 16px; border-radius:10px; font-weight:700;
+      cursor:pointer; box-shadow: 0 8px 18px rgba(255,122,45,0.18); transition:transform .18s;
+    }
+    .btn:hover{transform:translateY(-4px)}
+    .btn-outline{background:transparent; color:var(--accent-dark); border:2px solid rgba(255,122,45,0.12)}
+
+    .hero-right{
+      border-radius:16px; overflow:hidden; box-shadow:var(--shadow);
+      display:grid; grid-auto-rows:1fr; gap:0;
+    }
+    .hero-slider{ height:260px; background-size:cover; background-position:center; animation:heroSlide 14s infinite; }
+    @keyframes heroSlide{
+      0%{background-image:url('https://images.unsplash.com/photo-1548946526-f69e2424cf45?q=80&w=1200&auto=format&fit=crop')}
+      33%{background-image:url('https://images.unsplash.com/photo-1601252365247-3a7c9e0e1d58?q=80&w=1200&auto=format&fit=crop')}
+      66%{background-image:url('https://images.unsplash.com/photo-1512058564366-18510be2db19?q=80&w=1200&auto=format&fit=crop')}
+      100%{background-image:url('https://images.unsplash.com/photo-1548946526-f69e2424cf45?q=80&w=1200&auto=format&fit=crop')}
+    }
+
+    /* main area */
+    main{ max-width:1100px; margin:20px auto; padding:0 16px; display:grid; gap:22px;}
+    .section-head{display:flex; align-items:center; justify-content:space-between; gap:12px}
+    .section-head h3{margin:0}
+
+    /* products grid */
+    .products{ display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px;}
+    .product{
+      background:var(--card); border-radius:12px; overflow:hidden; box-shadow:var(--shadow); transition:transform .18s, box-shadow .18s;
+      display:flex; flex-direction:column;
+    }
+    .product:hover{ transform:translateY(-6px); box-shadow: 0 18px 30px rgba(37,25,16,0.12); }
+    .product img{ width:100%; height:160px; object-fit:cover; display:block; }
+    .product-body{ padding:12px; display:flex; flex-direction:column; gap:8px; flex:1; }
+    .product h4{ margin:0; color:#2f1f18 }
+    .price-row{ display:flex; justify-content:space-between; align-items:center; gap:8px; margin-top:auto }
+    .price{ font-weight:800; color:var(--accent-dark) }
+    .qty{ width:68px; padding:6px; border-radius:8px; border:1px solid #eee; text-align:center }
+
+    /* cart drawer */
+    .cart-btn{ position:fixed; bottom:22px; right:22px; background:linear-gradient(180deg,var(--accent),var(--accent-dark)); color:white; padding:14px 16px; border-radius:14px; box-shadow: 0 14px 34px rgba(255,122,45,0.18); border:none; font-weight:800; z-index:60 }
+    .cart-count{ background:#fff; color:var(--accent-dark); min-width:22px; padding:4px 8px; border-radius:999px; font-weight:700; display:inline-block; margin-left:8px }
+
+    /* cart modal */
+    .modal{ position:fixed; inset:0; display:flex; align-items:flex-end; justify-content:center; background:rgba(0,0,0,0.3); padding:20px; z-index:80; }
+    .cart-panel{ width:100%; max-width:720px; background:var(--card); border-radius:14px; padding:18px; box-shadow:var(--shadow); max-height:86vh; overflow:auto; }
+    .cart-item{ display:flex; gap:12px; align-items:center; border-bottom:1px dashed #eee; padding:10px 0 }
+    .cart-item img{ width:72px; height:64px; object-fit:cover; border-radius:8px }
+
+    .checkout-form { display:grid; gap:10px; margin-top:12px }
+    .field{ display:flex; flex-direction:column }
+    input[type="text"], input[type="tel"], textarea{ padding:10px; border-radius:8px; border:1px solid #eee; }
+    textarea{ min-height:80px; resize:vertical }
+
+    /* support footer link row */
+    footer{ max-width:1100px; margin:24px auto 80px; padding:0 16px; display:flex; justify-content:space-between; align-items:center; gap:12px; color:#4b3b32; }
+    .socials{ display:flex; gap:10px; align-items:center }
+
+    /* small screens */
+    @media (max-width:760px){
+      .hero{ grid-template-columns:1fr; }
+      nav .links{ display:none }
+      .brand{ gap:8px }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="nav">
+      <div class="brand" onclick="goHome()">
+        <div class="logo">TF</div>
+        <div>
+          <h1>Toujours Frais</h1>
+          <div style="font-size:12px;color:#8a6f60">Fresh bakery · Huye</div>
+        </div>
+      </div>
+
+      <div class="links">
+        <a href="#home" onclick="scrollToSection('home')">Home</a>
+        <a href="#menu" onclick="scrollToSection('menu')">Menu</a>
+        <a href="#order" onclick="scrollToSection('order')">Order</a>
+        <a href="#support" onclick="scrollToSection('support')">Support</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <div class="hero" id="home">
+    <div class="hero-left">
+      <div class="eyebrow">Bakery • Always Fresh</div>
+      <h2>Sweet breads & handcrafted cakes — baked daily</h2>
+      <p>Order now for pickup or delivery. Pay on delivery or confirm order via WhatsApp. Follow us on Instagram for specials & discounts.</p>
+      <div class="hero-actions">
+        <button class="btn" onclick="scrollToSection('menu')">Explore Menu</button>
+        <button class="btn btn-outline" onclick="openWhatsAppQuick()">Order on WhatsApp</button>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div class="hero-slider"></div>
+    </div>
+  </div>
+
+  <main>
+
+    <!-- MENU -->
+    <section id="menu">
+      <div class="section-head">
+        <h3>Our Menu</h3>
+        <div style="font-size:14px;color:#7a6457">Handpicked favorites — tap to add</div>
+      </div>
+
+      <div class="products" id="productsList">
+        <!-- JS will populate -->
+      </div>
+    </section>
+
+    <!-- QUICK ORDER -->
+    <section id="order">
+      <div class="section-head">
+        <h3>Your Cart & Checkout</h3>
+        <div style="font-size:13px;color:#7a6457">Secure checkout & WhatsApp confirmation</div>
+      </div>
+
+      <div style="display:flex; gap:18px; flex-direction:column">
+        <div style="display:flex; gap:12px; align-items:center;">
+          <button class="btn" onclick="openCart()">Open Cart (<span id="cartBadge">0</span>)</button>
+          <button class="btn btn-outline" onclick="openWhatsAppQuick()" title="Send quick message">WhatsApp Quick Message</button>
+          <a class="btn btn-outline" href="https://instagram.com/your_instagram_here" target="_blank" rel="noopener">Instagram</a>
+        </div>
+
+        <div class="card" style="background:linear-gradient(180deg, rgba(255,255,255,0.9), #fff); padding:12px; border-radius:12px">
+          <h4>Express Checkout</h4>
+          <div style="display:grid; grid-template-columns:1fr 220px; gap:12px; margin-top:8px;">
+            <div>
+              <div class="field">
+                <label style="font-weight:700; font-size:13px">Name</label>
+                <input id="checkoutName" type="text" placeholder="Your full name">
+              </div>
+              <div class="field">
+                <label style="font-weight:700; font-size:13px">Phone</label>
+                <input id="checkoutPhone" type="tel" placeholder="+250 78...">
+              </div>
+              <div class="field">
+                <label style="font-weight:700; font-size:13px">Address</label>
+                <textarea id="checkoutAddress" placeholder="Street, Sector, City"></textarea>
+              </div>
+            </div>
+
+            <div style="background:#fff6f0; padding:12px; border-radius:10px; box-shadow:0 6px 18px rgba(37,25,16,0.06)">
+              <div style="font-size:13px; color:#7a6457">Order summary</div>
+              <div style="margin-top:10px; display:flex; justify-content:space-between">
+                <div>Items</div><div id="summaryCount">0</div>
+              </div>
+              <div style="margin-top:6px; display:flex; justify-content:space-between; font-weight:800">
+                <div>Total</div><div id="summaryTotal">0 RWF</div>
+              </div>
+
+              <div style="margin-top:12px; display:flex; flex-direction:column; gap:10px">
+                <button class="btn" onclick="placeOrder()">Place Order (Confirm)</button>
+                <button class="btn btn-outline" onclick="simulatePayment()">Pay Online (Simulate)</button>
+                <button class="btn btn-outline" onclick="openWhatsAppCart()">Send via WhatsApp</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SUPPORT -->
+    <section id="support">
+      <div class="section-head">
+        <h3>Support & Contact</h3>
+        <div style="font-size:13px;color:#7a6457">We're happy to help — call or message</div>
+      </div>
+
+      <div style="display:flex; gap:18px; flex-wrap:wrap">
+        <div style="flex:1; min-width:260px; background:var(--card); padding:16px; border-radius:12px; box-shadow:var(--shadow)">
+          <h4>Contact</h4>
+          <p>Tel: <strong>0780068269</strong></p>
+          <p>Address: Toujours Frais Ltd, Huye, Southern Province</p>
+          <div style="margin-top:10px; display:flex; gap:8px">
+            <button class="btn" onclick="openWhatsApp()">Message on WhatsApp</button>
+            <a class="btn btn-outline" href="https://instagram.com/your_instagram_here" target="_blank">Instagram</a>
+          </div>
+        </div>
+
+        <div style="flex:1; min-width:260px; background:linear-gradient(180deg,#fff,#fff8f0); padding:16px; border-radius:12px; box-shadow:var(--shadow)">
+          <h4>Help Center</h4>
+          <p>FAQs, deliveries, refund policies & baking specials.</p>
+          <details style="margin-top:8px">
+            <summary>Delivery area & fees</summary>
+            <div style="padding:8px 0">We deliver in Huye and surrounding sectors. Fees vary by distance.</div>
+          </details>
+          <details style="margin-top:8px">
+            <summary>Payment methods</summary>
+            <div style="padding:8px 0">Cash on delivery, mobile money (MTN, Airtel) or online (simulated).</div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div>© <strong>Toujours Frais</strong> — Fresh bakery • Huye</div>
+    <div class="socials">
+      <a style="text-decoration:none;color:var(--muted)" href="https://instagram.com/your_instagram_here" target="_blank">Instagram</a>
+      <a style="text-decoration:none;color:var(--muted)" href="https://wa.me/250780068269?text=Hello%20Toujours%20Frais" target="_blank">WhatsApp</a>
+    </div>
+  </footer>
+
+  <!-- CART BUTTON -->
+  <button class="cart-btn" onclick="openCart()">Cart <span class="cart-count" id="cartCount">0</span></button>
+
+  <!-- CART MODAL (hidden by default) -->
+  <div id="cartModal" style="display:none" class="modal" onclick="if(event.target===this) closeCart()">
+    <div class="cart-panel" role="dialog" aria-modal="true" aria-labelledby="cartTitle">
+      <div style="display:flex; justify-content:space-between; align-items:center">
+        <h3 id="cartTitle">Your Cart</h3>
+        <div style="display:flex; gap:10px; align-items:center">
+          <button class="btn btn-outline" onclick="closeCart()">Close</button>
+          <button class="btn" onclick="checkoutFromCart()">Checkout</button>
+        </div>
+      </div>
+
+      <div id="cartItems" style="margin-top:12px">
+        <!-- items -->
+      </div>
+
+      <div style="display:flex; justify-content:space-between; margin-top:12px; align-items:center">
+        <div style="font-weight:800">Total</div>
+        <div style="font-weight:800" id="cartTotal">0 RWF</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ---------------------------
+       PRODUCTS DATA
+       Replace images or add more products here
+    ----------------------------*/
+    const PRODUCTS = [
+      { id:'cake-1', title:'Chocolate Cake (Small)', price:12000, img:'https://images.unsplash.com/photo-1608198093002-ad4e005484b7?q=80&w=1200&auto=format&fit=crop' },
+      { id:'bread-1', title:'Sourdough Loaf', price:4500, img:'https://images.unsplash.com/photo-1601315379731-21139f0b0b87?q=80&w=1200&auto=format&fit=crop' },
+      { id:'croissant-1', title:'Butter Croissant (2pc)', price:2000, img:'https://images.unsplash.com/photo-1512058564366-18510be2db19?q=80&w=1200&auto=format&fit=crop' },
+      { id:'donut-1', title:'Glazed Donut (1pc)', price:800, img:'https://images.unsplash.com/photo-1553163147-622ab57e7c8e?q=80&w=1200&auto=format&fit=crop' },
+      { id:'cupcake-1', title:'Vanilla Cupcake', price:900, img:'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?q=80&w=1200&auto=format&fit=crop' },
+      /* --------------------------- PRODUCTS DATA Replace images or add more products here ----------------------------*/ 
+const PRODUCTS = [
+    // --- ITEMS FROM YOUR SCREENSHOT ---
+    { id:'cake-3', title:'Chocolate Cake (Small)', price:25000, img:'https://images.unsplash.com/photo-1608198093002-ad4e005484b7?q=80&w=1200&auto=format&fit=crop' }, 
+    // [attachment_0](attachment)
+    { id:'bread-1', title:'Sourdough Loaf', price:4500, img:'https://images.unsplash.com/photo-1601315379731-21139f0b0b87?q=80&w=1200&auto=format&fit=crop' }, 
+    // [attachment_1](attachment)
+    { id:'croissant-1', title:'Butter Croissant (2pc)', price:2000, img:'https://images.unsplash.com/photo-1512058564366-18510be2db19?q=80&w=1200&auto=format&fit=crop' },
+    // [attachment_2](attachment)
+    { id:'donut-1', title:'Glazed Donut (1pc)', price:800, img:'https://images.unsplash.com/photo-1553163147-622ab57e7c8e?q=80&w=1200&auto=format&fit=crop' },
+    // [attachment_3](attachment)
+    { id:'cupcake-2', title:'Vanilla Cupcake', price:900, img:'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?q=80&w=1200&auto=format&fit=crop' },
+    // [attachment_4](attachment)
+    { id:'bread-6', title:'Ciabatta with Seeds', price:700, img:'https://images.unsplash.com/photo-1587841328452-9856a9a7970d?q=80&w=1200&auto=format&fit=crop' },
+    // [attachment_5](attachment)
+    
+    // --- NEW DIFFERENT BREAD TYPES ---
+    { id:'bread-2', title:'French Baguette', price:3000, img:'https://images.unsplash.com/photo-1533035353720-431876527b5c?q=80&w=1200&auto=format&fit=crop' }, 
+    // [attachment_6](attachment)
+    { id:'bread-3', title:'Rye Bread (Slice)', price:1500, img:'https://images.unsplash.com/photo-1517478059871-33ed6b270762?q=80&w=1200&auto=format&fit=crop' },
+    // [attachment_7](attachment)
+    { id:'bread-4', title:'Whole Wheat Loaf', price:4800, img:'https://images.unsplash.com/photo-1594924744111-2b0286e9e4f4?q=80&w=1200&auto=format&fit=crop' },
+    // [attachment_8](attachment)
+    { id:'bread-5', title:'Garlic Knots (3pc)', price:2200, img:'https://images.unsplash.com/photo-1601248067756-3b689a744b82?q=80&w=1200&auto=format&fit=crop' },
+    // [attachment_9](attachment)
+    { id:'bread-7', title:'Injera Bread (Large)', price:3000, img:'https://images.unsplash.com/photo-1549419134-8c01d46797b5?q=80&w=1200&auto=format&fit=crop' },
+    // [attachment_10](attachment)
+    { id:'bread-8', title:'Gluten-Free Bread', price:6000, img:'https://images.unsplash.com/photo-1588147427181-e28ac6d46067?q=80&w=1200&auto=format&fit=crop' },
+    // [attachment_11](attachment)
+    { id:'bread-9', title:'Pita Bread (6pc)', price:2500, img:'https://images.unsplash.com/photo-1622955546268-23e59074b1f4?q=80&w=1200&auto=format&fit=crop' },
+    // [attachment_12](attachment)
+    { id:'bread-10', title:'Sweet Challah', price:5500, img:'https://images.unsplash.com/photo-1616839352109-7a5416dd1997?q=80&w=1200&auto=format&fit=crop' },
+    // [attachment_13](attachment)
+    { id:'bread-11', title:'Olive Focaccia', price:4000, img:'https://images.unsplash.com/photo-1520111516246-0b89e3a62884?q=80&w=1200&auto=format&fit=crop' },
+    // [attachment_14](attachment)
+];
+
+      { id:'bread-2', title:'Banana Bread Slice', price:600, img:'https://images.unsplash.com/photo-1542831371-d531d36971e6?q=80&w=1200&auto=format&fit=crop' }
+    ];
+
+    /* ---------------------------
+       CART LOGIC (localStorage)
+    ----------------------------*/
+    const CART_KEY = 'tf_cart_v1';
+    let cart = JSON.parse(localStorage.getItem(CART_KEY) || '[]');
+
+    function saveCart(){ localStorage.setItem(CART_KEY, JSON.stringify(cart)); updateCartUI(); }
+
+    function addToCart(id, qty=1){
+      const p = PRODUCTS.find(x=>x.id===id); if(!p) return;
+      const existing = cart.find(i=>i.id===id);
+      if(existing) existing.qty += qty; else cart.push({ id, qty });
+      saveCart();
+      animateAdded();
+    }
+
+    function updateQty(id, qty){
+      qty = parseInt(qty) || 0;
+      cart = cart.map(i => i.id===id ? {...i, qty: qty} : i).filter(i=>i.qty>0);
+      saveCart();
+    }
+
+    function removeItem(id){
+      cart = cart.filter(i=>i.id!==id);
+      saveCart();
+    }
+
+    function clearCart(){ cart = []; saveCart(); }
+
+    function getCartItemsDetailed(){
+      return cart.map(i => {
+        const prod = PRODUCTS.find(p=>p.id===i.id);
+        return {...prod, qty: i.qty, lineTotal: prod.price * i.qty};
+      });
+    }
+
+    function cartCount(){ return cart.reduce((s,i)=>s+i.qty,0); }
+
+    function cartTotal(){ return cart.reduce((s,i)=> {
+      const prod = PRODUCTS.find(p=>p.id===i.id); return s + (prod ? prod.price * i.qty : 0);
+    },0); }
+
+    /* ---------------------------
+       RENDER PRODUCTS
+    ----------------------------*/
+    const productsList = document.getElementById('productsList');
+    function renderProducts(){
+      productsList.innerHTML = '';
+      PRODUCTS.forEach(p=>{
+        const el = document.createElement('div'); el.className='product';
+        el.innerHTML = `
+          <img src="${p.img}" alt="${escapeHtml(p.title)}">
+          <div class="product-body">
+            <h4>${escapeHtml(p.title)}</h4>
+            <div style="color:#7a6457; font-size:13px">Delicious & fresh</div>
+            <div class="price-row">
+              <div class="price">${formatCurrency(p.price)}</div>
+              <div style="display:flex; gap:8px; align-items:center">
+                <input type="number" min="1" value="1" class="qty" id="qty-${p.id}">
+                <button class="btn" onclick="addFromCard('${p.id}')">Add</button>
+              </div>
+            </div>
+          </div>
+        `;
+        productsList.appendChild(el);
+      });
+    }
+
+    function addFromCard(id){
+      const q = parseInt(document.getElementById(`qty-${id}`).value) || 1;
+      addToCart(id,q);
+    }
+
+    /* ---------------------------
+       CART UI
+    ----------------------------*/
+    const cartModal = document.getElementById('cartModal');
+    const cartItemsEl = document.getElementById('cartItems');
+    const cartCountEl = document.getElementById('cartCount');
+    const cartBadge = document.getElementById('cartBadge');
+    const summaryCount = document.getElementById('summaryCount');
+    const summaryTotal = document.getElementById('summaryTotal');
+    const cartTotalEl = document.getElementById('cartTotal');
+
+    function updateCartUI(){
+      cartCountEl.innerText = cartCount();
+      cartBadge.innerText = cartCount();
+      document.getElementById('cartBadge').innerText = cartCount();
+      summaryCount.innerText = cartCount();
+      summaryTotal.innerText = formatCurrency(cartTotal());
+      cartTotalEl.innerText = formatCurrency(cartTotal());
+
+      // populate cart items
+      const items = getCartItemsDetailed();
+      cartItemsEl.innerHTML = '';
+      if(items.length===0){
+        cartItemsEl.innerHTML = `<div style="padding:18px;color:#7a6457">Your cart is empty — add delicious items from the menu.</div>`;
+        return;
+      }
+      items.forEach(it=>{
+        const node = document.createElement('div'); node.className='cart-item';
+        node.innerHTML = `
+          <img src="${it.img}" alt="${escapeHtml(it.title)}">
+          <div style="flex:1">
+            <div style="display:flex; justify-content:space-between; align-items:center">
+              <div><strong>${escapeHtml(it.title)}</strong><div style="font-size:13px;color:#8a6f60">${formatCurrency(it.price)} each</div></div>
+              <div style="text-align:right">
+                <div style="font-weight:800">${formatCurrency(it.lineTotal)}</div>
+                <div style="font-size:13px;color:#8a6f60">${it.qty} pcs</div>
+              </div>
+            </div>
+            <div style="margin-top:8px; display:flex; gap:8px; align-items:center">
+              <input type="number" min="1" value="${it.qty}" style="width:72px;padding:6px;border-radius:8px" onchange="updateQty('${it.id}', this.value)">
+              <button class="btn btn-outline" onclick="removeItem('${it.id}')">Remove</button>
+            </div>
+          </div>
+        `;
+        cartItemsEl.appendChild(node);
+      });
+    }
+
+    function openCart(){ updateCartUI(); cartModal.style.display='flex'; }
+    function closeCart(){ cartModal.style.display='none'; }
+
+    function checkoutFromCart(){
+      closeCart();
+      window.location.hash = '#order';
+      scrollToSection('order');
+    }
+
+    /* ---------------------------
+       ORDER / PAYMENT / WHATSAPP
+    ----------------------------*/
+    function placeOrder(){
+      const name = document.getElementById('checkoutName').value.trim();
+      const phone = document.getElementById('checkoutPhone').value.trim();
+      const addr = document.getElementById('checkoutAddress').value.trim();
+
+      if(cart.length===0){ alert('Your cart is empty. Add items first.'); return; }
+      if(!name || !phone || !addr){ alert('Please enter name, phone and address.'); return; }
+
+      // create order summary
+      const items = getCartItemsDetailed();
+      let message = `Order from Toujours Frais Bakery.%0AName: ${encodeURIComponent(name)}%0APhone: ${encodeURIComponent(phone)}%0AAddress: ${encodeURIComponent(addr)}%0A%0AItems:%0A`;
+      items.forEach(it => {
+        message += `${encodeURIComponent(it.title)} x${it.qty} — ${formatCurrency(it.lineTotal)}%0A`;
+      });
+      message += `%0ATotal: ${encodeURIComponent(formatCurrency(cartTotal()))}%0A%0AThank you!`;
+
+      // Open WhatsApp with message (change phone number to your shop number)
+      const shopPhone = '250780068269'; // replace with shop whatsapp phone if different
+      const waUrl = `https://wa.me/${shopPhone}?text=${message}`;
+
+      // Option: also simulate server-side order saving (here we just show confirmation)
+      alert('Order placed! You will be redirected to WhatsApp to confirm the order.');
+      clearCart();
+      window.open(waUrl, '_blank');
+    }
+
+    function openWhatsAppCart(){
+      if(cart.length===0){ alert('Cart is empty. Add items first.'); return; }
+      const items = getCartItemsDetailed();
+      let message = `Hello Toujours Frais! I would like to order:%0A`;
+      items.forEach(it => message += `* ${encodeURIComponent(it.title)} x${it.qty}%0A`);
+      message += `%0ATotal: ${encodeURIComponent(formatCurrency(cartTotal()))}%0A%0AName:%0APhone:%0AAddress:%0A`;
+      const wa = `https://wa.me/250780068269?text=${message}`;
+      window.open(wa, '_blank');
+    }
+
+    function openWhatsAppQuick(){
+      const quick = encodeURIComponent('Hello Toujours Frais! I want to place an order. Please assist.');
+      window.open(`https://wa.me/250780068269?text=${quick}`, '_blank');
+    }
+
+    function openWhatsApp(){
+      const quick = encodeURIComponent('Hello Toujours Frais! I need help.');
+      window.open(`https://wa.me/250780068269?text=${quick}`, '_blank');
+    }
+
+    /* Simulate payment flow */
+    function simulatePayment(){
+      if(cart.length===0){ alert('Cart empty. Add items first.'); return; }
+      const proceed = confirm('Simulate online payment of ' + formatCurrency(cartTotal()) + '? (This is a demo)');
+      if(!proceed) return;
+      // pretend payment succeeded
+      setTimeout(()=> {
+        alert('Payment successful (simulated). Thank you! We will prepare your order.');
+        clearCart();
+      }, 900);
+    }
+
+    /* ---------------------------
+       UTILITIES
+    ----------------------------*/
+    function formatCurrency(n){
+      // Rwandan Franc format (no decimals)
+      return `${Math.round(n).toLocaleString('en-RW')} RWF`;
+    }
+
+    function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c=> ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+    function animateAdded(){
+      const el = document.createElement('div');
+      el.innerText = 'Added to cart';
+      el.style.position = 'fixed';
+      el.style.right='22px'; el.style.bottom='110px'; el.style.padding='10px 14px';
+      el.style.background='linear-gradient(90deg,var(--accent),var(--accent-dark))';
+      el.style.color='white'; el.style.borderRadius='10px'; el.style.boxShadow='var(--shadow)';
+      document.body.appendChild(el);
+      setTimeout(()=> el.style.opacity='0', 700);
+      setTimeout(()=> el.remove(), 1400);
+    }
+
+    function goHome(){ window.scrollTo({top:0, behavior:'smooth'}); }
+    function scrollToSection(id){
+      const el = document.getElementById(id);
+      if(!el) return;
+      const top = el.getBoundingClientRect().top + window.scrollY - 72;
+      window.scrollTo({top, behavior:'smooth'});
+    }
+
+    /* ---------------------------
+       LAUNCH / BIND
+    ----------------------------*/
+    function init(){
+      renderProducts();
+      updateCartUI();
+      // initial load saved cart -> ensure proper structure
+      saveCart();
+      // show simple intro toast once
+      if(!localStorage.getItem('tf_seen_intro')){
+        setTimeout(()=> {
+          const t = document.createElement('div');
+          t.innerText = 'Welcome — tap items to add to cart. Use WhatsApp for orders.';
+          t.style.position='fixed'; t.style.left='50%'; t.style.transform='translateX(-50%)';
+          t.style.top='88px'; t.style.background='white'; t.style.padding='10px 16px'; t.style.borderRadius='10px';
+          t.style.boxShadow='var(--shadow)'; t.style.zIndex=99;
+          document.body.appendChild(t);
+          setTimeout(()=> t.remove(), 3700);
+          localStorage.setItem('tf_seen_intro','1');
+        },500);
+      }
+    }
+
+    // expose functions used inline
+    window.addToCart = addToCart;
+    window.openCart = openCart;
+    window.closeCart = closeCart;
+    window.updateQty = updateQty;
+    window.removeItem = removeItem;
+    window.checkoutFromCart = checkoutFromCart;
+    window.openWhatsAppCart = openWhatsAppCart;
+    window.openWhatsAppQuick = openWhatsAppQuick;
+    window.openWhatsApp = openWhatsApp;
+    window.placeOrder = placeOrder;
+    window.simulatePayment = simulatePayment;
+
+    // initialize after DOM
+    document.addEventListener('DOMContentLoaded', init);
+  </script>
+
+  <!-- INSTRUCTIONS: replace "your_instagram_here" in links with your IG username.
+       Replace shop phone number in JS openWhatsApp* functions if different. -->
+
+</body>
+</html>
+
+
